@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Aeroporto {
     public String nome;
@@ -11,33 +10,22 @@ public class Aeroporto {
 
     private static List<Aeroporto> aeroportosCadastrados = new ArrayList<>();
 
+    
+    public Aeroporto(String nome, String sigla, String cidade, String estado, String pais) {
+        this.nome = nome;
+        this.sigla = sigla;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.pais = pais;
+    }
+
     public boolean cadastraAeroporto() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("DIGITE O NOME: ");
-        this.nome = sc.nextLine();
-
-        System.out.print("DIGITE A SIGLA: ");
-        this.sigla = sc.nextLine();
-
-        System.out.print("DIGITE A CIDADE: ");
-        this.cidade = sc.nextLine();
-
-        System.out.print("DIGITE O ESTADO: ");
-        this.estado = sc.nextLine();
-
-        System.out.print("DIGITE O PAÍS: ");
-        this.pais = sc.nextLine();
-
-        
         if (aeroportoJaCadastrado(this)) {
             System.out.println("Aeroporto já cadastrado!");
-            sc.close();
             return false;
         } else {
             aeroportosCadastrados.add(this);
             System.out.println("Aeroporto cadastrado com sucesso!");
-            sc.close();
             return true;
         }
     }
@@ -52,4 +40,8 @@ public class Aeroporto {
         return false;
     }
 
+    public static void main(String[] args) {
+        Aeroporto confins = new Aeroporto("Confins", "CNF", "Belo Horizonte", "MG", "Brasil");
+        confins.cadastraAeroporto();
     }
+}
