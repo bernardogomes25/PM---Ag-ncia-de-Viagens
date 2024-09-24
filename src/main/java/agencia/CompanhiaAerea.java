@@ -1,3 +1,4 @@
+package main.java.agencia;
 public class CompanhiaAerea {
     private String nome;
     private int codCompanhia;

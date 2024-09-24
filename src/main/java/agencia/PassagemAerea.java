@@ -1,3 +1,4 @@
+package main.java.agencia;
 
 
 public class PassagemAerea {
