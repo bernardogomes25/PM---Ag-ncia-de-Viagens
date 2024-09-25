@@ -20,8 +20,10 @@ public class App {
         System.out.println("Valor Bagagens Adicionais: " + voo.getValorBagagensAdicionais());
         System.out.println("Moeda: " + voo.getMoeda());
 
-        PassagemAerea passagem = new PassagemAerea("GRU", "SFO", "2024-10-01T15:30:00", "AA1234", "American Airlines",
-                1500.00, 3000.00, 4500.00, 100.00, 50.00, "BRL");
+        Aeroporto aeroportoOrigem = new Aeroporto("Confins", "CNF", "Belo Horizonte", "MG", "Brasil");
+        Aeroporto aeroportoDestino = new Aeroporto("Guarulhos", "GRU", "São Paulo", "SP", "Brasil");
+
+        PassagemAerea passagem = new PassagemAerea(aeroportoOrigem, aeroportoDestino, "2021-10-10 10:00", "GOL123", "GOL", 1000.0, 2000.0, 3000.0, 100.0, 50.0, "BRL");
 
         System.out.println("Tarifa Total: " + passagem.calcularTarifaTotal("basica"));
         System.out.println("Tarifa Total com Bagagens: " + passagem.calcularTarifaTotalComBagagens("basica", 2));
