@@ -40,9 +40,4 @@ public class Aeroporto {
         }
         return false;
     }
-
-    public static void main(String[] args) {
-        Aeroporto confins = new Aeroporto("Confins", "CNF", "Belo Horizonte", "MG", "Brasil");
-        confins.cadastraAeroporto();
-    }
 }

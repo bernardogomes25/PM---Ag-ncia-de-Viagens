@@ -112,16 +112,6 @@ public class PassagemAerea {
                 '}';
     }
 
-    public static void main(String[] args) {
-        PassagemAerea passagem = new PassagemAerea("GRU", "SFO", "2024-10-01T15:30:00", "AA1234", "American Airlines",
-                1500.00, 3000.00, 4500.00, 100.00, 50.00, "BRL");
-        
-        System.out.println(passagem);
-        System.out.println("Tarifa Básica: " + passagem.calcularTarifaTotal("basica"));
-        System.out.println("Tarifa Business com 2 bagagens adicionais: " + passagem.calcularTarifaTotalComBagagens("business", 2));
-        System.out.println("Remuneração da Agência: " + passagem.calcularRemuneracaoAgencia());
-    }
-
     public static double getTaxaAgencia() {
         return TAXA_AGENCIA;
     }
