@@ -1,5 +1,9 @@
+package test.java.agencia;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
+
+import main.java.agencia.CompanhiaAerea;
+
 import org.junit.jupiter.api.BeforeEach;
 
 public class CompanhiaAereaTest {

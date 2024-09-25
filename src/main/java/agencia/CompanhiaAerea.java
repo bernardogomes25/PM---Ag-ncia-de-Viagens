@@ -1,3 +1,4 @@
+package main.java.agencia;
 public class CompanhiaAerea {
     private String nome;
     private int codCompanhia;
@@ -5,21 +6,6 @@ public class CompanhiaAerea {
     private String CNPJ;
     private double primeiraBagagem;
     private double bagagemAdicional;
-
-    public static void main(String[] args) {
-        CompanhiaAerea companhia = new CompanhiaAerea("Airline", 123, "Airline S.A.", "00.000.000/0001-00", 50.0, 30.0);
-
-        companhia.definePrimeiraBagagem(60.0);
-        companhia.defineBagagemAdicional(40.0);
-
-        System.out.println("Nome: " + companhia.getNome());
-        System.out.println("Código da Companhia: " + companhia.getCodCompanhia());
-        System.out.println("Razão Social: " + companhia.razaoSocial);
-        System.out.println("CNPJ: " + companhia.CNPJ);
-
-        double valorTotalBagagens = companhia.defineValorBagagens();
-        System.out.println("Valor Total das Bagagens: " + valorTotalBagagens);
-    }
 
     // Construtor
     public CompanhiaAerea(String nome, int codCompanhia, String razaoSocial, String CNPJ, double primeiraBagagem, double bagagemAdicional) {

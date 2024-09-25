@@ -1,9 +1,10 @@
+package main.java.agencia;
 
 
 public class PassagemAerea {
 
-    private String aeroportoOrigem;
-    private String aeroportoDestino;
+    private Aeroporto aeroportoOrigem;
+    private Aeroporto aeroportoDestino;
     private String dataHoraVoo;
     private String codigoVoo;
     private String companhiaAerea;
@@ -17,7 +18,7 @@ public class PassagemAerea {
 
     private static final double TAXA_AGENCIA = 50.0; 
 
-    public PassagemAerea(String aeroportoOrigem, String aeroportoDestino, String dataHoraVoo, 
+    public PassagemAerea(Aeroporto aeroportoOrigem, Aeroporto aeroportoDestino, String dataHoraVoo, 
                          String codigoVoo, String companhiaAerea, double tarifaBasica, 
                          double tarifaBusiness, double tarifaPremium, double valorPrimeiraBagagem, 
                          double valorBagagensAdicionais, String moeda) {
@@ -34,11 +35,11 @@ public class PassagemAerea {
         this.moeda = moeda;
     }
 
-    public String getAeroportoOrigem() { return aeroportoOrigem; }
-    public void setAeroportoOrigem(String aeroportoOrigem) { this.aeroportoOrigem = aeroportoOrigem; }
+    public Aeroporto getAeroportoOrigem() { return aeroportoOrigem; }
+    public void setAeroportoOrigem(Aeroporto aeroportoOrigem) { this.aeroportoOrigem = aeroportoOrigem; }
     
-    public String getAeroportoDestino() { return aeroportoDestino; }
-    public void setAeroportoDestino(String aeroportoDestino) { this.aeroportoDestino = aeroportoDestino; }
+    public Aeroporto getAeroportoDestino() { return aeroportoDestino; }
+    public void setAeroportoDestino(Aeroporto aeroportoDestino) { this.aeroportoDestino = aeroportoDestino; }
     
     public String getDataHoraVoo() { return dataHoraVoo; }
     public void setDataHoraVoo(String dataHoraVoo) { this.dataHoraVoo = dataHoraVoo; }
@@ -109,16 +110,6 @@ public class PassagemAerea {
                 ", valorBagagensAdicionais=" + valorBagagensAdicionais +
                 ", moeda='" + moeda + '\'' +
                 '}';
-    }
-
-    public static void main(String[] args) {
-        PassagemAerea passagem = new PassagemAerea("GRU", "SFO", "2024-10-01T15:30:00", "AA1234", "American Airlines",
-                1500.00, 3000.00, 4500.00, 100.00, 50.00, "BRL");
-        
-        System.out.println(passagem);
-        System.out.println("Tarifa Básica: " + passagem.calcularTarifaTotal("basica"));
-        System.out.println("Tarifa Business com 2 bagagens adicionais: " + passagem.calcularTarifaTotalComBagagens("business", 2));
-        System.out.println("Remuneração da Agência: " + passagem.calcularRemuneracaoAgencia());
     }
 
     public static double getTaxaAgencia() {
