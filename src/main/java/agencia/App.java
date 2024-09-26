@@ -23,7 +23,7 @@ public class App {
         Aeroporto aeroportoOrigem = new Aeroporto("Confins", "CNF", "Belo Horizonte", "MG", "Brasil");
         Aeroporto aeroportoDestino = new Aeroporto("Guarulhos", "GRU", "São Paulo", "SP", "Brasil");
 
-        PassagemAerea passagem = new PassagemAerea(aeroportoOrigem, aeroportoDestino, "2021-10-10 10:00", "GOL123", "GOL", 1000.0, 2000.0, 3000.0, 100.0, 50.0, "BRL");
+        PassagemAerea passagem = new PassagemAerea("CNF", "GRU", LocalDate.of(2021, 10, 10), "GOL", 1000.0, 2000.0, 3000.0, 100.0, 50.0, "BRL");
 
         System.out.println("Tarifa Total: " + passagem.calcularTarifaTotal("basica"));
         System.out.println("Tarifa Total com Bagagens: " + passagem.calcularTarifaTotalComBagagens("basica", 2));
@@ -41,8 +41,6 @@ public class App {
 
         double valorTotalBagagens = companhia.defineValorBagagens();
         System.out.println("Valor Total das Bagagens: " + valorTotalBagagens);
-
-        System.out.println("Taxa da Agência: " + PassagemAerea.getTaxaAgencia());
 
         Aeroporto aeroporto = new Aeroporto("Confins", "CNF", "Belo Horizonte", "MG", "Brasil");
         aeroporto.cadastraAeroporto();

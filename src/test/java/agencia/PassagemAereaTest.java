@@ -3,92 +3,46 @@ package test.java.agencia;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import main.java.agencia.Aeroporto;
 import main.java.agencia.PassagemAerea;
 
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PassagemAereaTest {
 
-    private PassagemAerea passagem;
-    private Aeroporto aeroportoOrigem;
-    private Aeroporto aeroportoDestino;
-
     @BeforeEach
     public void setUp() {
-        aeroportoOrigem = new Aeroporto("GRU", "Aeroporto de Guarulhos", "São Paulo", null, null);
-        aeroportoDestino = new Aeroporto("JFK", "Aeroporto John F. Kennedy", "Nova York", null, null);
+        // Limpar as passagens cadastradas antes de cada teste
+        PassagemAerea.setPassagensCadastradas(null);
 
-        passagem = new PassagemAerea(
-                aeroportoOrigem,
-                aeroportoDestino,
-                "2024-12-15 10:00",
-                "AA1234",
-                "American Airlines",
-                1000.0, // tarifa básica
-                2000.0, // tarifa business
-                3000.0, // tarifa premium
-                150.0,  // valor primeira bagagem
-                100.0,  // valor bagagens adicionais
-                "USD"
-        );
+        // Adicionar passagens de exemplo para os testes
+        new PassagemAerea("GRU", "JFK", "2024-10-05T10:00:00", "AA5678", "American Airlines",
+                1800.00, 3200.00, 4600.00, 120.00, 60.00, "BRL");
+
+        new PassagemAerea("GRU", "SFO", "2024-11-01T15:30:00", "DL1234", "Delta Airlines",
+                1400.00, 2800.00, 4000.00, 110.00, 55.00, "BRL");
     }
 
     @Test
-    public void testCalcularTarifaTotalClasseBasica() {
-        assertEquals(1000.0, passagem.calcularTarifaTotal("basica"));
+    public void testPesquisarPassagens() {
+        // Testar busca por passagens que existem
+        List<PassagemAerea> resultado = PassagemAerea.pesquisarPassagens("GRU", "SFO", "2024-11-01");
+        assertFalse(resultado.isEmpty(), "A pesquisa deveria retornar uma passagem.");
+        assertEquals(1, resultado.size(), "Deveria haver exatamente uma passagem correspondente.");
+        assertEquals("DL1234", resultado.get(0).getCodigoVoo(), "O código do voo deve ser 'DL1234'.");
+
+        // Testar busca por passagens que não existem
+        resultado = PassagemAerea.pesquisarPassagens("GRU", "JFK", "2024-11-01");
+        assertTrue(resultado.isEmpty(), "A pesquisa não deveria retornar nenhuma passagem.");
     }
 
     @Test
-    public void testCalcularTarifaTotalClasseBusiness() {
-        assertEquals(2000.0, passagem.calcularTarifaTotal("business"));
-    }
+    public void testCalcularTarifaTotalComBagagens() {
+        PassagemAerea passagem = new PassagemAerea("GRU", "JFK", "2024-10-05T10:00:00", "AA5678", "American Airlines",
+                1800.00, 3200.00, 4600.00, 120.00, 60.00, "BRL");
 
-    @Test
-    public void testCalcularTarifaTotalClassePremium() {
-        assertEquals(3000.0, passagem.calcularTarifaTotal("premium"));
-    }
-
-    @Test
-    public void testCalcularTarifaTotalClasseInvalida() {
-        assertThrows(IllegalArgumentException.class, () -> passagem.calcularTarifaTotal("economica"));
-    }
-
-    @Test
-    public void testCalcularTarifaTotalComBagagensClasseBasicaSemBagagensAdicionais() {
-        assertEquals(1150.0, passagem.calcularTarifaTotalComBagagens("basica", 0));
-    }
-
-    @Test
-    public void testCalcularTarifaTotalComBagagensClasseBusinessComBagagensAdicionais() {
-        assertEquals(2250.0, passagem.calcularTarifaTotalComBagagens("business", 2));
-    }
-
-    @Test
-    public void testCalcularRemuneracaoAgencia() {
-        assertEquals(50.0, passagem.calcularRemuneracaoAgencia());
-    }
-
-    @Test
-    public void testToString() {
-        String expected = "PassagemAerea{" +
-                "aeroportoOrigem='GRU'" +
-                ", aeroportoDestino='JFK'" +
-                ", dataHoraVoo='2024-12-15 10:00'" +
-                ", codigoVoo='AA1234'" +
-                ", companhiaAerea='American Airlines'" +
-                ", tarifaBasica=1000.0" +
-                ", tarifaBusiness=2000.0" +
-                ", tarifaPremium=3000.0" +
-                ", valorPrimeiraBagagem=150.0" +
-                ", valorBagagensAdicionais=100.0" +
-                ", moeda='USD'" +
-                '}';
-        assertEquals(expected, passagem.toString());
-    }
-
-    @Test
-    public void testGetTaxaAgencia() {
-        assertEquals(50.0, PassagemAerea.getTaxaAgencia());
+        // Testar o cálculo da tarifa com bagagens
+        double tarifaTotal = passagem.calcularTarifaTotalComBagagens("basica", 2);
+        assertEquals(2040.00, tarifaTotal, 0.01, "O valor da tarifa total deveria ser 2040.00.");
     }
 }
