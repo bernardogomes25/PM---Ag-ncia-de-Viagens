@@ -20,10 +20,10 @@ public class App {
         System.out.println("Valor Bagagens Adicionais: " + voo.getValorBagagensAdicionais());
         System.out.println("Moeda: " + voo.getMoeda());
 
-        Aeroporto aeroportoOrigem = new Aeroporto("Confins", "CNF", "Belo Horizonte", "MG", "Brasil");
-        Aeroporto aeroportoDestino = new Aeroporto("Guarulhos", "GRU", "São Paulo", "SP", "Brasil");
-
-        PassagemAerea passagem = new PassagemAerea("CNF", "GRU", LocalDate.of(2021, 10, 10), "GOL", 1000.0, 2000.0, 3000.0, 100.0, 50.0, "BRL");
+        Aeroporto origem = new Aeroporto("Aeroporto Internacional de Confins", "CNF", "Confins", "MG", "Brasil");
+        Aeroporto destino = new Aeroporto("Aeroporto Internacional de Guarulhos", "GRU", "Guarulhos", "SP", "Brasil");
+        PassagemAerea passagem = new PassagemAerea(origem, destino, LocalDate.of(2021, 10, 10), "GOL1234", "GOL",
+                1000.0, 2000.0, 3000.0, 100.0, 50.0, "BRL");
 
         System.out.println("Tarifa Total: " + passagem.calcularTarifaTotal("basica"));
         System.out.println("Tarifa Total com Bagagens: " + passagem.calcularTarifaTotalComBagagens("basica", 2));
@@ -45,9 +45,11 @@ public class App {
         Aeroporto aeroporto = new Aeroporto("Confins", "CNF", "Belo Horizonte", "MG", "Brasil");
         aeroporto.cadastraAeroporto();
 
-        Voo voo1 = new Voo("São Paulo", "Rio de Janeiro", LocalDate.of(2024, 10, 1), "Companhia A", 200.0, 400.0, 600.0, 50.0, 30.0, "BRL");
+        Voo voo1 = new Voo("São Paulo", "Rio de Janeiro", LocalDate.of(2024, 10, 1), "Companhia A", 200.0, 400.0, 600.0,
+                50.0, 30.0, "BRL");
 
-        Voo voo2 = new Voo("Salvador", "Fortaleza", LocalDate.of(2024, 10, 2), "Companhia B", 150.0, 300.0, 450.0, 40.0, 20.0, "BRL");
+        Voo voo2 = new Voo("Salvador", "Fortaleza", LocalDate.of(2024, 10, 2), "Companhia B", 150.0, 300.0, 450.0, 40.0,
+                20.0, "BRL");
 
         System.out.println("Código do Voo 1: " + voo1.getCodigoVoo());
         System.out.println("Código do Voo 2: " + voo2.getCodigoVoo());
@@ -55,7 +57,7 @@ public class App {
         System.out.println("Tarifa Básica do Voo 1: " + voo1.calculaTarifa("basica"));
         System.out.println("Tarifa Business do Voo 1: " + voo1.calculaTarifa("business"));
         System.out.println("Tarifa Premium do Voo 1: " + voo1.calculaTarifa("premium"));
-        
+
         System.out.println("Valor da Bagagem 1 do Voo 1: " + voo1.calculaBagagem(1));
         System.out.println("Valor da Bagagem 2 do Voo 1: " + voo1.calculaBagagem(2));
 

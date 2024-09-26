@@ -1,21 +1,14 @@
 package main.java.agencia;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PassagemAerea {
 
-    public static List<PassagemAerea> getPassagensCadastradas() {
-        return passagensCadastradas;
-    }
-
-    public static void setPassagensCadastradas(List<PassagemAerea> passagensCadastradas) {
-        PassagemAerea.passagensCadastradas = passagensCadastradas;
-    }
-
-    private String aeroportoOrigem;
-    private String aeroportoDestino;
-    private String dataHoraVoo;
+    private Aeroporto aeroportoOrigem;
+    private Aeroporto aeroportoDestino;
+    private LocalDate dataHoraVoo;
     private String codigoVoo;
     private String companhiaAerea;
     private double tarifaBasica;
@@ -29,7 +22,8 @@ public class PassagemAerea {
 
     private static List<PassagemAerea> passagensCadastradas = new ArrayList<>();
 
-    public PassagemAerea(String aeroportoOrigem, String aeroportoDestino, String dataHoraVoo, 
+    // Construtor
+    public PassagemAerea(Aeroporto aeroportoOrigem, Aeroporto aeroportoDestino, LocalDate dataHoraVoo, 
                          String codigoVoo, String companhiaAerea, double tarifaBasica, 
                          double tarifaBusiness, double tarifaPremium, double valorPrimeiraBagagem, 
                          double valorBagagensAdicionais, String moeda) {
@@ -45,34 +39,38 @@ public class PassagemAerea {
         this.valorBagagensAdicionais = valorBagagensAdicionais;
         this.moeda = moeda;
 
-
         passagensCadastradas.add(this);
     }
 
+    public static List<PassagemAerea> getPassagensCadastradas() {
+        return passagensCadastradas;
+    }
 
-    public static List<PassagemAerea> pesquisarPassagens(String aeroportoOrigem, String aeroportoDestino, String dataVoo) {
+    public static void setPassagensCadastradas(List<PassagemAerea> passagensCadastradas) {
+        PassagemAerea.passagensCadastradas = passagensCadastradas;
+    }
+
+    public static List<PassagemAerea> pesquisarPassagens(Aeroporto aeroportoOrigem, Aeroporto aeroportoDestino, String dataVoo) {
         List<PassagemAerea> resultadoPesquisa = new ArrayList<>();
 
         for (PassagemAerea passagem : passagensCadastradas) {
- 
-            if (passagem.getAeroportoOrigem().equalsIgnoreCase(aeroportoOrigem) &&
-                passagem.getAeroportoDestino().equalsIgnoreCase(aeroportoDestino) &&
-                passagem.getDataHoraVoo().startsWith(dataVoo)) { 
+            if (passagem.getAeroportoOrigem().getSigla().equalsIgnoreCase(aeroportoOrigem.getSigla()) &&
+                passagem.getAeroportoDestino().getSigla().equalsIgnoreCase(aeroportoDestino.getSigla()) &&
+                passagem.getDataHoraVoo().toString().startsWith(dataVoo)) { 
                 resultadoPesquisa.add(passagem);
             }
         }
         return resultadoPesquisa;
     }
 
-  
-    public String getAeroportoOrigem() { return aeroportoOrigem; }
-    public void setAeroportoOrigem(String aeroportoOrigem) { this.aeroportoOrigem = aeroportoOrigem; }
+    public Aeroporto getAeroportoOrigem() { return aeroportoOrigem; }
+    public void setAeroportoOrigem(Aeroporto aeroportoOrigem) { this.aeroportoOrigem = aeroportoOrigem; }
 
-    public String getAeroportoDestino() { return aeroportoDestino; }
-    public void setAeroportoDestino(String aeroportoDestino) { this.aeroportoDestino = aeroportoDestino; }
+    public Aeroporto getAeroportoDestino() { return aeroportoDestino; }
+    public void setAeroportoDestino(Aeroporto aeroportoDestino) { this.aeroportoDestino = aeroportoDestino; }
 
-    public String getDataHoraVoo() { return dataHoraVoo; }
-    public void setDataHoraVoo(String dataHoraVoo) { this.dataHoraVoo = dataHoraVoo; }
+    public LocalDate getDataHoraVoo() { return dataHoraVoo; }
+    public void setDataHoraVoo(LocalDate dataHoraVoo) { this.dataHoraVoo = dataHoraVoo; }
 
     public String getCodigoVoo() { return codigoVoo; }
     public void setCodigoVoo(String codigoVoo) { this.codigoVoo = codigoVoo; }
@@ -98,65 +96,30 @@ public class PassagemAerea {
     public String getMoeda() { return moeda; }
     public void setMoeda(String moeda) { this.moeda = moeda; }
 
-
     public double calcularTarifaTotal(String classe) {
-        return switch (classe.toLowerCase()) {
-            case "basica" -> tarifaBasica;
-            case "business" -> tarifaBusiness;
-            case "premium" -> tarifaPremium;
-            default -> throw new IllegalArgumentException("Classe inválida.");
-        };
+        switch (classe.toLowerCase()) {
+            case "basica":
+                return tarifaBasica + TAXA_AGENCIA;
+            case "business":
+                return tarifaBusiness + TAXA_AGENCIA;
+            case "premium":
+                return tarifaPremium + TAXA_AGENCIA;
+            default:
+                throw new IllegalArgumentException("Classe inválida: " + classe);
+        }
     }
 
-    public double calcularTarifaTotalComBagagens(String classe, int numBagagensAdicionais) {
-        double tarifa = calcularTarifaTotal(classe);
-        return tarifa + valorPrimeiraBagagem + valorBagagensAdicionais * numBagagensAdicionais;
+    public double calcularTarifaTotalComBagagens(String classe, int quantidadeBagagens) {
+        double tarifaTotal = calcularTarifaTotal(classe);
+        if (quantidadeBagagens > 1) {
+            tarifaTotal += valorPrimeiraBagagem + (quantidadeBagagens - 1) * valorBagagensAdicionais;
+        } else if (quantidadeBagagens == 1) {
+            tarifaTotal += valorPrimeiraBagagem;
+        }
+        return tarifaTotal;
     }
 
     public double calcularRemuneracaoAgencia() {
         return TAXA_AGENCIA;
     }
-
-    @Override
-    public String toString() {
-        return "PassagemAerea{" +
-                "aeroportoOrigem='" + aeroportoOrigem + '\'' +
-                ", aeroportoDestino='" + aeroportoDestino + '\'' +
-                ", dataHoraVoo='" + dataHoraVoo + '\'' +
-                ", codigoVoo='" + codigoVoo + '\'' +
-                ", companhiaAerea='" + companhiaAerea + '\'' +
-                ", tarifaBasica=" + tarifaBasica +
-                ", tarifaBusiness=" + tarifaBusiness +
-                ", tarifaPremium=" + tarifaPremium +
-                ", valorPrimeiraBagagem=" + valorPrimeiraBagagem +
-                ", valorBagagensAdicionais=" + valorBagagensAdicionais +
-                ", moeda='" + moeda + '\'' +
-                '}';
-    }
-
-    public static void main(String[] args, PassagemAerea passagemAerea) {
-  
-    
-
-        new PassagemAerea("GRU", "JFK", "2024-10-05T10:00:00", "AA5678", "American Airlines",
-                1800.00, 3200.00, 4600.00, 120.00, 60.00, "BRL");
-
-        new PassagemAerea("GRU", "SFO", "2024-11-01T15:30:00", "DL1234", "Delta Airlines",
-                1400.00, 2800.00, 4000.00, 110.00, 55.00, "BRL");
-
- 
-        List<PassagemAerea> resultadoPesquisa = PassagemAerea.pesquisarPassagens("GRU", "SFO", "2024-10-01");
-        
-        if (!resultadoPesquisa.isEmpty()) {
-            System.out.println("Passagens encontradas:");
-            for (PassagemAerea passagem : resultadoPesquisa) {
-                System.out.println(passagem);
-            }
-        } else {
-            System.out.println("Nenhuma passagem encontrada.");
-        }
-    }
 }
-
-
-
